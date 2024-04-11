@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/src/login/login_page.dart';
+import 'package:flutter_application_1/src/register/register_page.dart';
 import 'package:flutter_application_1/src/utils/my_colors.dart';
 
 void main() {
@@ -21,13 +22,15 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return  MaterialApp(
       theme: ThemeData(
-        primaryColor: MyColors.primaryColor
+        primaryColor: MyColors.primaryColor,
+        fontFamily:'NimbusSans',
       ),
       title: 'Delivery app flutter',
-      initialRoute: 'login',
+      initialRoute: 'register',
       debugShowCheckedModeBanner: false,
       routes: {
-        'login':  (BuildContext bc) => LoginPage()
+        'login':  (BuildContext bc) => LoginPage(),
+        'register':  (BuildContext bc) => RegisterPage()
       }
     );
   }

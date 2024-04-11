@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter_application_1/src/login/login_controller.dart';
 import 'package:flutter_application_1/src/utils/my_colors.dart';
+import 'package:lottie/lottie.dart';
 
 
 class LoginPage extends StatefulWidget {
@@ -10,6 +13,17 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+
+  LoginController _login = new LoginController();
+
+  @override
+  void initState() {
+    super.initState();
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) { 
+      _login.init(context);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -35,13 +49,18 @@ class _LoginPageState extends State<LoginPage> {
       )
       );
     }
+
+
+    Widget _lottieAnimation() {
+      return Lottie.asset('assets/json/login.json', width: 350, height: 200,  fit: BoxFit.fill);
+    }
     Widget _imageBanner() {
       return Container(
         margin: EdgeInsets.only(
-          top: 100,
-          bottom: MediaQuery.of(context).size.height * 0.22,
+          top: 150,
+          bottom: MediaQuery.of(context).size.height * 0.2,
           ),
-        child: Image.asset('assets/img/delivery.png', width: 200, height: 200)
+        child: _lottieAnimation()
       );
     }
 
@@ -50,7 +69,7 @@ class _LoginPageState extends State<LoginPage> {
         width: double.infinity,
         margin: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
         child: ElevatedButton(
-        onPressed: (){}, 
+        onPressed:_login.login, 
         child: Text('INGRESAR'), 
         style: ElevatedButton.styleFrom(
           backgroundColor: MyColors.primaryColor,
@@ -70,19 +89,28 @@ class _LoginPageState extends State<LoginPage> {
             children: [
             Text('No tienes cuenta?'),
             SizedBox(width: 10),
-            Text('Registrate', style: TextStyle(fontWeight: FontWeight.bold, color: MyColors.primaryColor),)
+                        GestureDetector(
+              onTap: (){
+                _login.goToRegisterPage();
+              },
+              child:             Text('Registrate', style: TextStyle(fontWeight: FontWeight.bold, color: MyColors.primaryColor),)
+
+            ),
           ],);
     }
 
 
     Widget _inputTextEmail() {
       return Container(
+            
             margin: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
             decoration: BoxDecoration(
               color: MyColors.primaryColorLight,
               borderRadius: BorderRadius.circular(100),
             ),
             child: TextField( 
+              controller: _login.email,
+              keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
                 hintText: 'Correo electronico',
                 border: InputBorder.none,
@@ -105,6 +133,8 @@ class _LoginPageState extends State<LoginPage> {
               borderRadius: BorderRadius.circular(100),
             ),
             child: TextField( 
+              obscureText: true,
+              controller: _login.password,
               decoration: InputDecoration(
                 hintText: 'Password',
                 border: InputBorder.none,
@@ -132,17 +162,19 @@ class _LoginPageState extends State<LoginPage> {
               left: 30,
               child: _textLogin()
               ),
-            Column(
-            children: [
-              _imageBanner(),
-              _inputTextEmail(),
-              _inputTextPassword(),
-               SizedBox(height: 20),
-              _loginButton(),
-              SizedBox(height: 20),
-              _dontHaveAccount()
-            ],
-              ),
+            SingleChildScrollView(
+              child: Column(
+              children: [
+                _imageBanner(),
+                _inputTextEmail(),
+                _inputTextPassword(),
+                 SizedBox(height: 20),
+                _loginButton(),
+                SizedBox(height: 20),
+                _dontHaveAccount()
+              ],
+                ),
+            ),
           ]
         ),
       )
