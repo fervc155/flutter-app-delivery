@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_application_1/src/login/login_controller.dart';
+import 'package:flutter_application_1/src/pages/login/login_controller.dart';
 import 'package:flutter_application_1/src/utils/my_colors.dart';
 import 'package:lottie/lottie.dart';
 

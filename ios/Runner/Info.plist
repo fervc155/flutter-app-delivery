@@ -12,6 +12,21 @@
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
+	<key>NSAddTrasportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+	<key>com.apple.security.files.user-selected.read-only</key>
+  	<true/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>To chose a picture from the gallery</string>
+	<key>NSCameraUsageDescription</key>
+    <string> App wants to access your camera</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string> App wants to access your gallery</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string> App wants to access your microphone</string>
 	<key>CFBundleName</key>
 	<string>flutter_application_1</string>
 	<key>CFBundlePackageType</key>

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_application_1/src/register/register_controller.dart';
+import 'package:flutter_application_1/src/pages/register/register_controller.dart';
 import 'package:flutter_application_1/src/utils/my_colors.dart';
 
 
@@ -8,20 +8,24 @@ class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
 
   @override
-  State<RegisterPage> createState() => _RegisterPageState();
+  State<RegisterPage> createState() => controllerPageState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
+class controllerPageState extends State<RegisterPage> {
 
-  RegisterController _Register = new RegisterController();
+  RegisterController controller = new RegisterController();
 
   @override
   void initState() {
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) { 
-      _Register.init(context);
+      controller.init(context,refresh);
     });
   }
+
+  refresh() { setState(() {
+    
+  });}
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +48,7 @@ class _RegisterPageState extends State<RegisterPage> {
         children: [
           IconButton(
             icon:Icon(Icons.arrow_back_ios),
-            onPressed: (){},
+            onPressed: () {print('click');},
             color:Colors.white
           ),
           Text('REGISTRO', 
@@ -62,23 +66,29 @@ class _RegisterPageState extends State<RegisterPage> {
 
 
     Widget _imageBanner() {
-      return Container(
-        margin: EdgeInsets.only(
-          top: 150,
-          bottom:30,
-          ),
-        child:  CircleAvatar(
-          radius: 60,
-          backgroundImage: AssetImage('assets/img/user_profile.png'),)
+      return GestureDetector(
+        onTap: controller.showAlertDialog,
+        child: Container(
+          margin: EdgeInsets.only(
+            top: 150,
+            bottom:30,
+            ),
+          child:  CircleAvatar(
+            radius: 60,
+            backgroundImage:  controller.file != null ?
+            FileImage(controller.file!)
+            : AssetImage('assets/img/user_profile.png') as ImageProvider<Object>?
+            )
+        )
       );
     }
 
-    Widget _RegisterButton() {
+    Widget controllerButton() {
       return Container(
         width: double.infinity,
         margin: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
         child: ElevatedButton(
-        onPressed: _Register.register, 
+        onPressed: controller.isEnabled? controller.register: null, 
         child: Text('INGRESAR'), 
         style: ElevatedButton.styleFrom(
           backgroundColor: MyColors.primaryColor,
@@ -100,7 +110,7 @@ class _RegisterPageState extends State<RegisterPage> {
             SizedBox(width: 10),
                         GestureDetector(
               onTap: (){
-                _Register.goToLoginPage();
+                controller.goToLoginPage();
               },
               child:             Text('Login', style: TextStyle(fontWeight: FontWeight.bold, color: MyColors.primaryColor),)
 
@@ -117,7 +127,7 @@ class _RegisterPageState extends State<RegisterPage> {
               borderRadius: BorderRadius.circular(100),
             ),
             child: TextField( 
-              controller: _Register.email,
+              controller: controller.email,
               decoration: InputDecoration(
                 hintText: 'Correo electronico',
                 border: InputBorder.none,
@@ -139,7 +149,7 @@ class _RegisterPageState extends State<RegisterPage> {
               borderRadius: BorderRadius.circular(100),
             ),
             child: TextField( 
-                              controller: _Register.name,
+                              controller: controller.name,
 
               decoration: InputDecoration(
                 hintText: 'Nombre',
@@ -161,7 +171,7 @@ class _RegisterPageState extends State<RegisterPage> {
               borderRadius: BorderRadius.circular(100),
             ),
             child: TextField( 
-                              controller: _Register.phone,
+                              controller: controller.phone,
               keyboardType: TextInputType.phone,
               decoration: InputDecoration(
                 hintText: 'Telefono',
@@ -184,7 +194,7 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
             child: TextField( 
               obscureText: true,
-                              controller: _Register.password,
+                              controller: controller.password,
 
               decoration: InputDecoration(
                 hintText: 'Repetir password',
@@ -207,7 +217,7 @@ class _RegisterPageState extends State<RegisterPage> {
               borderRadius: BorderRadius.circular(100),
             ),
             child: TextField( 
-                              controller: _Register.lastname,
+                              controller: controller.lastname,
 
               decoration: InputDecoration(
                 hintText: 'Apellido',
@@ -234,7 +244,7 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
             child: TextField( 
               obscureText: true,
-                controller: _Register.passwordconfirm,
+                controller: controller.passwordconfirm,
               decoration: InputDecoration(
                 hintText: 'Password',
                 border: InputBorder.none,
@@ -273,7 +283,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 _inputTextPassword(),
                 _inputTextPasswordConfirm(),
                  SizedBox(height: 20),
-                _RegisterButton(),
+                controllerButton(),
                 SizedBox(height: 20),
                 _HaveAccount()
               ],
