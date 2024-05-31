@@ -7,19 +7,32 @@ class SharePref {
 
   save(String key, value)  async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.setString(key, json.encode(value));
+
+    if(value is String == false) {
+      value = json.encode(value);
+    }
+    prefs.setString(key, value);
   }
 
   Future<dynamic> read(String key) async {
-     final prefs = await SharedPreferences.getInstance();
-   
-    if(prefs.getString(key) == null) {
-      return null;
-    }
-
-    return json.encode(prefs.getString(key));
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(key);
   }
 
+
+    Future<dynamic> user() async {
+     dynamic user = await this.read('user');
+
+     if(user!=null) {
+      while (user is String) {
+        user = json.decode(user);
+      } 
+
+      return user;
+     }
+
+     return null;
+  }
 
 
   Future<bool> contains(String key) async {

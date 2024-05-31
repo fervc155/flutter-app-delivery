@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 import "package:flutter/scheduler.dart";
 import "package:flutter_application_1/src/models/rol.dart";
-import "package:flutter_application_1/src/roles/roles_controller.dart";
+import "package:flutter_application_1/src/pages/roles/roles_controller.dart";
 
 
 class RolesPage extends StatefulWidget {

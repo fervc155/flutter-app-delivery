@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/src/models/user.dart';
 import 'package:flutter_application_1/src/utils/share_pref.dart';
@@ -16,13 +14,9 @@ class RolesController {
     this.context = c;
     this.refresh=refresh;
 
-    dynamic userJson = await share.read('user') ?? Map<String, dynamic>.from({});
+    dynamic userJson = await share.user();
 
-    if(userJson is Map == false) {
-      userJson = jsonDecode(jsonDecode(userJson));
-    }
-    
-    
+        
      User user =  User.fromJson( userJson);
      if(user.sessionToken!=null) {
       this.user = user;

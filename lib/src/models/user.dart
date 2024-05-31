@@ -19,7 +19,7 @@ class User {
   String? notificationToken;
   String? image;
   List<Rol>? roles = [];
- // List<User>? toList = [];
+  List<User> toList = [];
 
   User({
     this.id,
@@ -52,8 +52,8 @@ class User {
   User.fromJsonList(List<dynamic> jsonList) {
     if (jsonList == false) return;
     jsonList.forEach((item) {
- //     User user = User.fromJson(item);
-   //   toList.add(user);
+     User user = User.fromJson(item);
+     toList.add(user);
     });
   }
 
@@ -67,6 +67,24 @@ class User {
     "session_token": sessionToken,
     "notification_token": notificationToken,
     "image": image,
-    "roles": (roles?.length ?? 0) > 0 ? roles!.map((Rol rol) =>rol.toJson()): [],
+    "roles": () {
+      if(roles==null) {
+        return null;
+      }
+
+     
+      if(roles!.length > 0) {
+
+        List<dynamic> jsonList = [];
+        roles!.forEach((rol){
+          jsonList.add(rol.toJson());
+        });
+        
+        return jsonList;
+      }
+
+      return null;
+
+    }(),
   };
 }

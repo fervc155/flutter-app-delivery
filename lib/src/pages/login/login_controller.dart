@@ -4,7 +4,6 @@ import "package:flutter_application_1/src/models/user.dart";
 import "package:flutter_application_1/src/providers/user_provider.dart";
 import "package:flutter_application_1/src/utils/my_snapbar.dart";
 import "package:flutter_application_1/src/utils/share_pref.dart";
-import "dart:convert";
 
 class LoginController {
 
@@ -19,22 +18,21 @@ class LoginController {
     this.context = c;
     this.userProvider.init(c);
 
-    dynamic userJson = await share.read('user') ?? Map<String, dynamic>.from({});
+    dynamic userJson = await share.user();
 
-    if(userJson is Map == false) {
-      userJson = jsonDecode(jsonDecode(userJson));
-    }
-    
-     User user =  User.fromJson( userJson);
-     if(user.sessionToken!=null) {
-       if((user.roles?.length ?? 0 )>1) {
+    if(userJson==null) {
+      return;
+    }    
+    User user =  User.fromJson( userJson);
+    if(user.sessionToken!=null) {
+      if((user.roles?.length ?? 0 )>1) {
         //  Navigator.pushNamedAndRemoveUntil(context, user.roles?[0].route ?? '', (route) => false);
-          Navigator.pushNamedAndRemoveUntil(context, 'roles', (route) => false);
-        } else {
-          Navigator.pushNamedAndRemoveUntil(context, user.roles?[0].route ?? '', (route) => false);
+        Navigator.pushNamedAndRemoveUntil(context, 'roles', (route) => false);
+      } else {
+        Navigator.pushNamedAndRemoveUntil(context, user.roles?[0].route ?? '', (route) => false);
 
-       }
-         }
+      }
+    }
 
 
   }

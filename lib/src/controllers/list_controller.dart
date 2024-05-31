@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/src/models/user.dart';
@@ -12,20 +11,23 @@ class ListController{
   SharePref share = new SharePref();
   GlobalKey<ScaffoldState> key = new GlobalKey();
   User? user;
-  Function? refresh;
+  late Function refresh;
 
   init(BuildContext c, Function refresh) async {
+    dynamic userJson = await share.user();   
+    this.user=  User.fromJson( userJson);
+
     this.context = c;
-    dynamic userJson = await share.read('user') ?? Map<String, dynamic>.from({});
     this.refresh =refresh;
-    if(userJson is Map == false) {
-      userJson = jsonDecode(jsonDecode(userJson));
-    }
-    
-    User user =  User.fromJson( userJson);
-    this.user=user;
-    refresh();
+    await this.refreshMenu();
   
+  }
+
+
+  refreshMenu() async {
+      dynamic userJson = await share.user();   
+      this.user=  User.fromJson( userJson);
+      refresh();
   }
 
   logout()  {
@@ -33,7 +35,7 @@ class ListController{
   }
 
   openDrawer() {
-    key.currentState!.openDrawer();
+    key.currentState?.openDrawer();
   }
 
   hasRoles() {
@@ -44,7 +46,20 @@ class ListController{
     return false;
   }
 
+  void gotoUpdatePage() {
+    Navigator.pushNamed(context, 'client/update');
+  }
+
   gotoRoles() {
     Navigator.pushNamedAndRemoveUntil(context, 'roles', (route) => false);
+  }
+
+
+  void gotoCategoryCreate(){
+    Navigator.pushNamed(context, 'restaurant/categories/create');
+  }
+  
+  void goToOrdersList() {
+    Navigator.pushNamed(context, 'client/orders/list');
   }
 }
